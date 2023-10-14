@@ -1,65 +1,160 @@
-The objective of this assignment is to reinforce your understanding of inheritance in Java by creating a base class and three derived classes to model different types of devices. You will also practice generating random instances of these devices, calculating total prices, and managing class hierarchies.
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Scanner;
 
-1. Base Class - Device:
+// Base class Device
+class Device {
+    private String type;
+    private double price;
+    private double weight;
 
-   - Create a base class named "Device".
+    public Device(String type, double price, double weight) {
+        this.type = type;
+        this.price = price;
+        this.weight = weight;
+    }
 
-   - Include the following attributes:
+    public String getType() {
+        return type;
+    }
 
-     - "type" (String) - Represents the type of the device (e.g., "Smartphone," "Laptop," "Tablet," etc.).
+    public void setType(String type) {
+        this.type = type;
+    }
 
-     - "price" (double) - Represents the price of the device in USD.
+    public double getPrice() {
+        return price;
+    }
 
-     - "weight" (double) - Represents the weight of the device in grams.
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-   - Implement a parameterized constructor to initialize these attributes.
+    public double getWeight() {
+        return weight;
+    }
 
-   - Implement getters and setters for all attributes.
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+}
 
-2. Derived Classes:
+// Derived class Smartphone
+class Smartphone extends Device {
+    private double screenSize;
+    private int cameraResolution;
 
-   - Create three derived classes, each representing a specific type of device (e.g., "Smartphone", "Laptop", "Tablet").
+    public Smartphone(String type, double price, double weight, double screenSize, int cameraResolution) {
+        super(type, price, weight);
+        this.screenSize = screenSize;
+        this.cameraResolution = cameraResolution;
+    }
 
-   - Each derived class should inherit from the "Device" class and have additional attributes and methods that are specific to that type of device. For example, a "Smartphone" class may have attributes like "screenSize" and "cameraResolution".
+    public double getScreenSize() {
+        return screenSize;
+    }
 
-3. Main Program:
+    public void setScreenSize(double screenSize) {
+        this.screenSize = screenSize;
+    }
 
-   - In the main program, ask the user to input the number of devices they want to create (a number between 1 and 20).
+    public int getCameraResolution() {
+        return cameraResolution;
+    }
 
-   - Generate random instances of the derived classes with different types and prices for the specified number of devices.
+    public void setCameraResolution(int cameraResolution) {
+        this.cameraResolution = cameraResolution;
+    }
+}
 
-   - Calculate and display the following information:
+// Derived class Laptop
+class Laptop extends Device {
+    private String processor;
+    private int ram;
 
-     - The number of distinct device types created.
+    public Laptop(String type, double price, double weight, String processor, int ram) {
+        super(type, price, weight);
+        this.processor = processor;
+        this.ram = ram;
+    }
 
-     - The total price of all devices.
+    public String getProcessor() {
+        return processor;
+    }
 
-     - The total weight of all devices.
+    public void setProcessor(String processor) {
+        this.processor = processor;
+    }
 
+    public int getRam() {
+        return ram;
+    }
 
+    public void setRam(int ram) {
+        this.ram = ram;
+    }
+}
 
-Additional Tips:
+// Derived class Tablet
+class Tablet extends Device {
+    private String operatingSystem;
 
-- Use the "Random" class in Java to generate random values for prices, weights, and any other attributes you choose to add to the derived classes.
+    public Tablet(String type, double price, double weight, String operatingSystem) {
+        super(type, price, weight);
+        this.operatingSystem = operatingSystem;
+    }
 
-- Ensure proper encapsulation by using access modifiers (e.g., "private", "protected", "public") for class attributes.
+    public String getOperatingSystem() {
+        return operatingSystem;
+    }
 
-- Organize your code into packages for better structure and readability.
+    public void setOperatingSystem(String operatingSystem) {
+        this.operatingSystem = operatingSystem;
+    }
+}
 
-- Include meaningful comments and documentation for your classes and methods.
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of devices to create (1-20): ");
+        int numDevices = scanner.nextInt();
 
+        if (numDevices < 1 || numDevices > 20) {
+            System.out.println("Invalid input. Please enter a number between 1 and 20.");
+            return;
+        }
 
+        ArrayList<Device> devices = new ArrayList<>();
+        Random random = new Random();
 
-Grading Criteria:
+        for (int i = 0; i < numDevices; i++) {
+            int deviceType = random.nextInt(3); // 0: Smartphone, 1: Laptop, 2: Tablet
 
-Your assignment will be graded based on the following criteria:
+            if (deviceType == 0) {
+                devices.add(new Smartphone("Smartphone", random.nextDouble() * 1000, random.nextDouble() * 1000, random.nextDouble() * 6, random.nextInt(16) + 5));
+            } else if (deviceType == 1) {
+                devices.add(new Laptop("Laptop", random.nextDouble() * 2000, random.nextDouble() * 2000, "Intel i7", random.nextInt(16) + 4));
+            } else {
+                devices.add(new Tablet("Tablet", random.nextDouble() * 500, random.nextDouble() * 500, "Android"));
+            }
+        }
 
-- Correct implementation of the base class and derived classes.
+        // Calculate and display information
+        HashSet<String> distinctTypes = new HashSet<>();
+        double totalPrice = 0;
+        double totalWeight = 0;
 
-- Proper usage of inheritance, constructors, and getters/setters.
+        for (Device device : devices) {
+            distinctTypes.add(device.getType());
+            totalPrice += device.getPrice();
+            totalWeight += device.getWeight();
+        }
 
-- Accurate calculation of the total price and total weight.
+        System.out.println("Number of distinct device types created: " + distinctTypes.size());
+        System.out.println("Total price of all devices: $" + totalPrice);
+        System.out.println("Total weight of all devices: " + totalWeight + " grams");
 
-- Proper code organization, naming conventions, and documentation.
-
-- Successful submission of the GitHub repository link.
+        scanner.close();
+    }
+}
